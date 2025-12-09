@@ -1,16 +1,19 @@
 package br.com.sgcore.sgcore_cloud.modules.core.interfaces;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface GenericCrudService<T, R> {
 
-    R insert(T t);
+    T insert(R r);
 
-    List<R> insert(List<T> t);
+    List<R> insert(List<R> r);
 
     R findById(Long id);
 
-    void update(T t);
+    Collection<R> findAll();
+
+    void update(Long id, R r);
 
     void delete(Long id);
 }

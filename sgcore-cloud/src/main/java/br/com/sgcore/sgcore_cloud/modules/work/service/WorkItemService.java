@@ -11,12 +11,12 @@ import java.util.List;
 public class WorkItemService implements GenericCrudService<WorkItem, WorkItemDTO> {
 
     @Override
-    public WorkItemDTO insert(WorkItem workItem) {
+    public WorkItem insert(WorkItemDTO dto) {
         return null;
     }
 
     @Override
-    public List<WorkItemDTO> insert(List<WorkItem> t) {
+    public List<WorkItemDTO> insert(List<WorkItemDTO> dtoList) {
         return List.of();
     }
 
@@ -26,7 +26,12 @@ public class WorkItemService implements GenericCrudService<WorkItem, WorkItemDTO
     }
 
     @Override
-    public void update(WorkItem workItem) {
+    public List<WorkItemDTO> findAll() {
+        return null;
+    }
+
+    @Override
+    public void update(Long id, WorkItemDTO dto) {
 
     }
 
