@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  sgcore-cloud:
+    container_name: sgcore-cloud
+    build:
+      context: ./sgcore-cloud
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    networks:
+      - sgcore-network
+
+  sgcore-ui:
+    container_name: sgcore-ui
+    build:
+      context: ./sgcore-ui
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - sgcore-cloud
+    networks:
+      - sgcore-network
+
+networks:
+  sgcore-network:
+    driver: bridge
