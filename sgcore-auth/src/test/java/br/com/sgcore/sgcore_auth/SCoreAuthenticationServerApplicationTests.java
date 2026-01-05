@@ -1,0 +1,13 @@
+package br.com.sgcore.sgcore_auth;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class SCoreAuthenticationServerApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
