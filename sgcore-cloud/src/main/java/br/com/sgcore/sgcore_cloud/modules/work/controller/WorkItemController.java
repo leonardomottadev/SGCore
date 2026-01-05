@@ -6,6 +6,7 @@ import br.com.sgcore.sgcore_cloud.modules.work.service.WorkItemService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -19,7 +20,8 @@ public class WorkItemController {
 
     private final WorkItemService service;
 
-    @PostMapping
+    @PostMapping("/")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public  ResponseEntity<?> insert(@Valid @RequestBody WorkItemDTO dto) {
         WorkItem workItem = service.insert(dto);
 
@@ -33,16 +35,19 @@ public class WorkItemController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<WorkItemDTO> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
     @GetMapping("/all")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<Collection<WorkItemDTO>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> update(
             @PathVariable Long id,
             @Valid @RequestBody WorkItemDTO dto) {
@@ -52,6 +57,7 @@ public class WorkItemController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();

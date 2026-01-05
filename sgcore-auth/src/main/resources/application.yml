@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: SCore Authentication Server
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8070/realms/sgcore
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+server:
+  port: 8082
+keycloak:
+  token-uri: http://localhost:8070/realms/sgcore/protocol/openid-connect/token
