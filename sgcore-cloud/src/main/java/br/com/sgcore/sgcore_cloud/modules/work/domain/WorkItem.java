@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "task")
+@Table(name = "work-item")
 public class WorkItem extends BaseEntity {
 
 }

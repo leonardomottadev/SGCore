@@ -33,9 +33,9 @@ public class TokenController {
         formData.add("password", user.password);
         formData.add("grant_type", user.grantType);
 
-        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<MultiValueMap<String, String>>(formData, headers);
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(formData, headers);
 
-        return rt.postForEntity("http://localhost:8070/realms/sgcore/protocol/openid-connect/token",entity, String.class);
+        return rt.postForEntity(tokenUri,entity, String.class);
     }
 
     public record User(String clientId, String username, String password, String grantType) {}

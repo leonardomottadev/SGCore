@@ -1,7 +1,6 @@
-version: "3.9"
-
 services:
   sgcore-cloud:
+    image: sgcore-cloud
     container_name: sgcore-cloud
     build:
       context: ./sgcore-cloud
@@ -10,10 +9,28 @@ services:
       - "8081:8081"
     environment:
       - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/sgcore
+      - SPRING_DATASOURCE_USERNAME=sgcore
+      - SPRING_DATASOURCE_PASSWORD=sgcore
+    depends_on:
+      - postgres
+      - keycloak
+    networks:
+      - sgcore-network
+
+  sgcore-auth:
+    image: sgcore-auth
+    container_name: sgcore-auth
+    build:
+      context: ./sgcore-auth
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
     networks:
       - sgcore-network
 
   sgcore-ui:
+    image: sgcore-ui
     container_name: sgcore-ui
     build:
       context: ./sgcore-ui
@@ -25,6 +42,41 @@ services:
     networks:
       - sgcore-network
 
+  postgres:
+    container_name: sgcore-db
+    image: postgres:16
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: sgcore
+      POSTGRES_USER: sgcore
+      POSTGRES_PASSWORD: sgcore
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - sgcore-network
+
+  keycloak:
+    container_name: sgcore-keycloak
+    image: quay.io/keycloak/keycloak:26.4.7
+    command:
+      - start-dev
+      - --import-realm
+    ports:
+      - "8070:8080"
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+    volumes:
+      - ./keycloak:/opt/keycloak/data/import
+    networks:
+      - sgcore-network
+
+volumes:
+  postgres-data:
+
 networks:
   sgcore-network:
+    name: sgcore-network
     driver: bridge

@@ -5,9 +5,9 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8070/realms/sgcore
-          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+          issuer-uri: http://keycloak:8080/realms/sgcore
+          jwk-set-uri: http://keycloak:8080/realms/sgcore/protocol/openid-connect/certs
 server:
   port: 8082
 keycloak:
-  token-uri: http://localhost:8070/realms/sgcore/protocol/openid-connect/token
+  token-uri: http://keycloak:8080/realms/sgcore/protocol/openid-connect/token
