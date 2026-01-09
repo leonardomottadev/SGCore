@@ -13,5 +13,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "work-item")
 public class WorkItem extends BaseEntity {
-
+    private String title;
+    private String description;
+    private String status;
 }

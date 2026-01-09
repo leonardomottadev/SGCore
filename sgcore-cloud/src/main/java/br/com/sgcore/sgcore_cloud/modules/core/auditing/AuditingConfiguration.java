@@ -1,6 +1,5 @@
 package br.com.sgcore.sgcore_cloud.modules.core.auditing;
 
-import br.com.sgcore.sgcore_cloud.modules.core.security.CurrentAuditorAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;

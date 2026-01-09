@@ -2,9 +2,10 @@ package br.com.sgcore.sgcore_cloud.modules.core.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -15,7 +16,9 @@ import java.util.Objects;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 public class BaseEntity implements Serializable {
     @Serial
@@ -26,18 +29,30 @@ public class BaseEntity implements Serializable {
     private Long id;
 
     @CreatedDate
-    @Column(updatable = false, nullable = false)
+    @Column(updatable = false)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime created;
 
     @LastModifiedDate
     @Column(nullable = false)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime modified;
 
-    public BaseEntity(Long id, LocalDateTime created, LocalDateTime modified) {
+    @CreatedBy
+    @Column(updatable = false)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String createdBy;
+
+    @LastModifiedBy
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String lastModifiedBy;
+
+    public BaseEntity(Long id, LocalDateTime created, LocalDateTime modified, String createdBy, String lastModifiedBy) {
         this.id = id;
         this.created = created;
         this.modified = modified;
+        this.createdBy = createdBy;
+        this.lastModifiedBy = lastModifiedBy;
     }
 
     @Override
