@@ -6,7 +6,7 @@ services:
       context: ./sgcore-cloud
       dockerfile: Dockerfile
     ports:
-      - "8081:8080"
+      - "${SGCORE_CLOUD_HTTP_PORT}:8080"
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
       SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
@@ -15,7 +15,6 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
       SPRING_JPA_DATABASE_PLATFORM: ${SPRING_JPA_DATABASE_PLATFORM}
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: ${JWT_ISSUER_URI}
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: ${JWK_SET_URI}
     depends_on:
       - postgres
       - keycloak
@@ -29,10 +28,9 @@ services:
       context: ./sgcore-auth
       dockerfile: Dockerfile
     ports:
-      - "8082:8080"
+      - "${SGCORE_AUTH_HTTP_PORT}:8080"
     environment:
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: ${JWT_ISSUER_URI}
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: ${JWK_SET_URI}
       KEYCLOAK_TOKEN_URI: ${KEYCLOAK_TOKEN_URI}
     networks:
       - sgcore-network
@@ -44,7 +42,7 @@ services:
       context: ./sgcore-ui
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "${SGCORE_UI_HTTP_PORT}:80"
     depends_on:
       - sgcore-cloud
     networks:
@@ -55,7 +53,7 @@ services:
     image: postgres:16
     restart: unless-stopped
     ports:
-      - "5432:5432"
+      - "${SGCORE_POSTGRES_TCP_PORT}:5432"
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -72,7 +70,7 @@ services:
       - start-dev
       - --import-realm
     ports:
-      - "8070:8080"
+      - "${SGCORE_KEYCLOAK_HTTP_PORT}:8080"
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_USERNAME}
       KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_PASSWORD}
