@@ -5,10 +5,11 @@ import br.com.sgcore.sgcore_cloud.modules.work.domain.WorkItem;
 import br.com.sgcore.sgcore_cloud.modules.work.dto.WorkItemDTO;
 import br.com.sgcore.sgcore_cloud.modules.work.mapper.WorkItemMapper;
 import br.com.sgcore.sgcore_cloud.modules.work.repository.WorkItemRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class WorkItemService implements GenericCrudService<WorkItem, WorkItemDTO> {
@@ -33,12 +34,14 @@ public class WorkItemService implements GenericCrudService<WorkItem, WorkItemDTO
 
     @Override
     public WorkItemDTO findById(Long id) {
-        return null;
+        Optional<WorkItem> workItemEntity = repository.findById(id);
+        return workItemEntity.map(WorkItemMapper::toDTO).orElse(null);
     }
 
     @Override
     public List<WorkItemDTO> findAll() {
-        return null;
+        List<WorkItem> workItems = repository.findAll();
+        return workItems.stream().map(WorkItemMapper::toDTO).collect(Collectors.toList());
     }
 
     @Override
