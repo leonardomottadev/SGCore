@@ -1,6 +1,8 @@
 package br.com.sgcore.sgcore_cloud.modules.work.domain;
 
 import br.com.sgcore.sgcore_cloud.modules.core.domain.BaseEntity;
+import br.com.sgcore.sgcore_cloud.modules.work.enums.WorkItemPriority;
+import br.com.sgcore.sgcore_cloud.modules.work.enums.WorkItemStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

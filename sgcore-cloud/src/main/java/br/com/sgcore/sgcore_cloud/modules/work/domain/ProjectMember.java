@@ -1,6 +1,7 @@
 package br.com.sgcore.sgcore_cloud.modules.work.domain;
 
 import br.com.sgcore.sgcore_cloud.modules.core.domain.BaseEntity;
+import br.com.sgcore.sgcore_cloud.modules.work.enums.ProjectMemberRole;
 import jakarta.persistence.*;
 
 import lombok.Getter;

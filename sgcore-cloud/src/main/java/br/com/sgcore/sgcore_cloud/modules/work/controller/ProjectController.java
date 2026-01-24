@@ -1,9 +1,9 @@
 package br.com.sgcore.sgcore_cloud.modules.work.controller;
 
-import br.com.sgcore.sgcore_cloud.modules.work.domain.WorkItem;
-import br.com.sgcore.sgcore_cloud.modules.work.dto.WorkItemRequestDTO;
-import br.com.sgcore.sgcore_cloud.modules.work.dto.WorkItemResponseDTO;
-import br.com.sgcore.sgcore_cloud.modules.work.service.WorkItemService;
+import br.com.sgcore.sgcore_cloud.modules.work.domain.Project;
+import br.com.sgcore.sgcore_cloud.modules.work.dto.ProjectRequestDTO;
+import br.com.sgcore.sgcore_cloud.modules.work.dto.ProjectResponseDTO;
+import br.com.sgcore.sgcore_cloud.modules.work.service.ProjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,19 +17,19 @@ import java.util.Collection;
 @RestController
 @RequestMapping("/work-item")
 @RequiredArgsConstructor
-public class WorkItemController {
+public class ProjectController {
 
-    private final WorkItemService service;
+    private final ProjectService service;
 
     @PostMapping("/")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public  ResponseEntity<?> create(@Valid @RequestBody WorkItemRequestDTO dto) {
-        WorkItem workItem = service.create(dto);
+    public ResponseEntity<?> create(@Valid @RequestBody ProjectRequestDTO dto) {
+        Project project = service.create(dto);
 
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(workItem.getId())
+                .buildAndExpand(project.getId())
                 .toUri();
 
         return ResponseEntity.created(uri).build();
@@ -37,13 +37,13 @@ public class WorkItemController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<WorkItemResponseDTO> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.findById(id));
+    public ResponseEntity<ProjectResponseDTO> findById(@PathVariable Long id) {
+        return  ResponseEntity.ok(service.findById(id));
     }
 
     @GetMapping("/all")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<Collection<WorkItemResponseDTO>> findAll() {
+    public ResponseEntity<Collection<ProjectResponseDTO>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
 
@@ -51,7 +51,7 @@ public class WorkItemController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> update(
             @PathVariable Long id,
-            @Valid @RequestBody WorkItemRequestDTO dto) {
+            @Valid @RequestBody ProjectRequestDTO dto) {
 
         service.update(id, dto);
         return ResponseEntity.ok().build();

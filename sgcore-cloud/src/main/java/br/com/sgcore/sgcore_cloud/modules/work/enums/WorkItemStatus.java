@@ -1,4 +1,4 @@
-package br.com.sgcore.sgcore_cloud.modules.work.domain;
+package br.com.sgcore.sgcore_cloud.modules.work.enums;
 
 import java.util.Arrays;
 import java.util.Optional;
