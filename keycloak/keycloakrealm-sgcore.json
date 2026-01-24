@@ -1,6 +1,11 @@
 {
   "realm": "sgcore",
   "enabled": true,
+  "accessTokenLifespan": 7200,
+  "accessTokenLifespanForImplicitFlow": 7200,
+  "ssoSessionIdleTimeout": 7200,
+  "ssoSessionMaxLifespan": 14400,
+  "offlineSessionIdleTimeout": 2592000,
 
   "roles": {
     "realm": [

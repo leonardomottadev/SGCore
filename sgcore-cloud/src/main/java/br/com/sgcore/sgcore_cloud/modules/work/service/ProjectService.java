@@ -6,6 +6,7 @@ import br.com.sgcore.sgcore_cloud.modules.work.dto.ProjectRequestDTO;
 import br.com.sgcore.sgcore_cloud.modules.work.dto.ProjectResponseDTO;
 import br.com.sgcore.sgcore_cloud.modules.work.mapper.ProjectMapper;
 import br.com.sgcore.sgcore_cloud.modules.work.repository.ProjectRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,11 +52,9 @@ public class ProjectService implements GenericCrudService<Project, ProjectReques
 
     @Override
     public void update(Long id, ProjectRequestDTO dto) {
-        Optional<Project> optional = repository.findById(id);
-        if (optional.isEmpty()) {
-            return;
-        }
-        repository.save(ProjectMapper.toEntity(dto));
+        Project entity = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Project not found"));
+        repository.save(ProjectMapper.updateEntity(entity, dto));
     }
 
     @Override

@@ -15,7 +15,7 @@ import java.net.URI;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/work-item")
+@RequestMapping("/project")
 @RequiredArgsConstructor
 public class ProjectController {
 

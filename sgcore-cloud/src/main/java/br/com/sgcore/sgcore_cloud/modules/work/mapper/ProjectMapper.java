@@ -26,6 +26,15 @@ public class ProjectMapper {
         return entity;
     }
 
+    public static Project updateEntity(Project entity, ProjectRequestDTO dto) {
+        if(dto == null) {
+            return entity;
+        }
+        entity.setName(dto.getName());
+        entity.setDescription(dto.getDescription());
+        return entity;
+    }
+
     public static ProjectResponseDTO toDTO(Project entity) {
         if(entity == null) {
             return null;

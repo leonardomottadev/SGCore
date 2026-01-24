@@ -6,6 +6,7 @@ import br.com.sgcore.sgcore_cloud.modules.work.dto.WorkItemRequestDTO;
 import br.com.sgcore.sgcore_cloud.modules.work.dto.WorkItemResponseDTO;
 import br.com.sgcore.sgcore_cloud.modules.work.mapper.WorkItemMapper;
 import br.com.sgcore.sgcore_cloud.modules.work.repository.WorkItemRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,7 +54,9 @@ public class WorkItemService implements GenericCrudService<WorkItem, WorkItemReq
         if (optional.isEmpty()) {
             return;
         }
-        repository.save(WorkItemMapper.toEntity(dto));
+        WorkItem entity = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Work Item not found"));
+        repository.save(WorkItemMapper.updateEntity(entity, dto));
     }
 
     @Override

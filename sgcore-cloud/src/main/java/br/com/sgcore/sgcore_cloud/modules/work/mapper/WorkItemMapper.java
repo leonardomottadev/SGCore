@@ -41,6 +41,23 @@ public class WorkItemMapper {
         return entity;
     }
 
+    public static WorkItem updateEntity(WorkItem entity, WorkItemRequestDTO dto) {
+        if (dto == null) {
+            return entity;
+        }
+        entity.setTitle(dto.getTitle());
+        entity.setAssignedTo(dto.getAssignedTo());
+        entity.setDescription(dto.getDescription());
+        entity.setStatus(WorkItemStatus.fromString(dto.getStatus()).orElse(WorkItemStatus.UNKNOWN));
+        entity.setPriority(WorkItemPriority.fromString(dto.getPriority()).orElse(WorkItemPriority.MEDIUM));
+        if(dto.getProjectId() != null) {
+            Project project = new Project();
+            project.setId(dto.getProjectId());
+            entity.setProject(project);
+        }
+        return entity;
+    }
+
     public static WorkItemResponseDTO toDTO(WorkItem entity) {
         if (entity == null) {
             return null;
