@@ -8,21 +8,6 @@ import br.com.sgcore.sgcore_cloud.modules.work.enums.WorkItemStatus;
 import br.com.sgcore.sgcore_cloud.modules.work.dto.WorkItemResponseDTO;
 
 public class WorkItemMapper {
-    public static WorkItem toEntity(WorkItemResponseDTO dto) {
-        if (dto == null) {
-            return null;
-        }
-        WorkItem entity = new WorkItem();
-        entity.setId(dto.getId());
-        entity.setTitle(dto.getTitle());
-        entity.setAssignedTo(dto.getAssignedTo());
-        entity.setDescription(dto.getDescription());
-        entity.setStatus(WorkItemStatus.fromString(dto.getStatus()).orElse(WorkItemStatus.UNKNOWN));
-        entity.setPriority(WorkItemPriority.fromString(dto.getPriority()).orElse(WorkItemPriority.MEDIUM));
-        entity.setProject(ProjectMapper.toEntity(dto.getProject()));
-        return entity;
-    }
-
     public static WorkItem toEntity(WorkItemRequestDTO dto) {
         if (dto == null) {
             return null;
