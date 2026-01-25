@@ -1,6 +1,7 @@
 # SGCore
 
-### .env (example)
+### CONFIGURE
+.env example:
 ```
 SPRING_PROFILES_ACTIVE=prod
 
@@ -26,4 +27,14 @@ KEYCLOAK_PASSWORD=admin
 
 JWT_ISSUER_URI=http://keycloak:8080/realms/sgcore
 KEYCLOAK_TOKEN_URI=http://keycloak:8080/realms/sgcore/protocol/openid-connect/token
+```
+
+###  BUILD 
+```
+docker compose build
+```
+
+###  EXECUTE
+```
+docker compose up -d
 ```
