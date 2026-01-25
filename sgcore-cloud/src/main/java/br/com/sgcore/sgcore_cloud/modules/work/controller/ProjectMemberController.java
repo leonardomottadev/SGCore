@@ -23,8 +23,8 @@ public class ProjectMemberController {
 
     @PostMapping("/")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<?> create(@Valid @RequestBody ProjectMemberRequestDTO dto) {
-        ProjectMember projectMember = service.create(dto);
+    public ResponseEntity<ProjectMemberResponseDTO> create(@Valid @RequestBody ProjectMemberRequestDTO dto) {
+        ProjectMemberResponseDTO projectMember = service.create(dto);
 
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -32,7 +32,7 @@ public class ProjectMemberController {
                 .buildAndExpand(projectMember.getId())
                 .toUri();
 
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(projectMember);
     }
 
     @GetMapping("/{id}")
@@ -49,12 +49,11 @@ public class ProjectMemberController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> update(
+    public ResponseEntity<ProjectMemberResponseDTO> update(
             @PathVariable Long id,
             @Valid @RequestBody ProjectMemberRequestDTO dto) {
-
-        service.update(id, dto);
-        return ResponseEntity.ok().build();
+        ProjectMemberResponseDTO updatedProjectMember = service.update(id, dto);
+        return ResponseEntity.ok().body(updatedProjectMember);
     }
 
     @DeleteMapping("/{id}")

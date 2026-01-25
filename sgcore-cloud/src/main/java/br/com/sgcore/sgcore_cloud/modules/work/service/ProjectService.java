@@ -23,23 +23,26 @@ public class ProjectService implements GenericCrudService<Project, ProjectReques
     }
 
     @Override
-    public Project create(ProjectRequestDTO dto) {
+    public ProjectResponseDTO create(ProjectRequestDTO dto) {
         Project entity = ProjectMapper.toEntity(dto);
-        return repository.save(entity);
+        Project saved = repository.save(entity);
+        return ProjectMapper.toDTO(saved);
     }
 
     @Override
-    public List<Project> createAll(List<ProjectRequestDTO> dtoList) {
+    public List<ProjectResponseDTO> createAll(List<ProjectRequestDTO> dtoList) {
         List<Project> entities = dtoList.stream()
                 .map(ProjectMapper::toEntity)
                 .toList();
-        return repository.saveAll(entities);
+        List<Project> saved = repository.saveAll(entities);
+        return saved.stream().map(ProjectMapper::toDTO).toList();
     }
 
     @Override
     public ProjectResponseDTO findById(Long id) {
         Optional<Project> projectEntity = repository.findById(id);
-        return projectEntity.map(ProjectMapper::toDTO).orElse(null);
+        return projectEntity.map(ProjectMapper::toDTO)
+                .orElseThrow(() -> new EntityNotFoundException("Project not found"));
     }
 
     @Override
@@ -51,10 +54,11 @@ public class ProjectService implements GenericCrudService<Project, ProjectReques
     }
 
     @Override
-    public void update(Long id, ProjectRequestDTO dto) {
+    public ProjectResponseDTO update(Long id, ProjectRequestDTO dto) {
         Project entity = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Project not found"));
-        repository.save(ProjectMapper.updateEntity(entity, dto));
+        Project saved = repository.save(ProjectMapper.updateEntity(entity, dto));
+        return ProjectMapper.toDTO(saved);
     }
 
     @Override

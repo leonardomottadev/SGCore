@@ -23,23 +23,26 @@ public class ProjectMemberService implements GenericCrudService<ProjectMember, P
     }
 
     @Override
-    public ProjectMember create(ProjectMemberRequestDTO dto) {
+    public ProjectMemberResponseDTO create(ProjectMemberRequestDTO dto) {
         ProjectMember entity = ProjectMemberMapper.toEntity(dto);
-        return repository.save(entity);
+        ProjectMember saved = repository.save(entity);
+        return ProjectMemberMapper.toDTO(saved);
     }
 
     @Override
-    public List<ProjectMember> createAll(List<ProjectMemberRequestDTO> dtoList) {
+    public List<ProjectMemberResponseDTO> createAll(List<ProjectMemberRequestDTO> dtoList) {
         List<ProjectMember> entities = dtoList.stream()
                 .map(ProjectMemberMapper::toEntity)
                 .toList();
-        return repository.saveAll(entities);
+        List<ProjectMember> saved = repository.saveAll(entities);
+        return saved.stream().map(ProjectMemberMapper::toDTO).toList();
     }
 
     @Override
     public ProjectMemberResponseDTO findById(Long id) {
         Optional<ProjectMember> projectMemberEntity = repository.findById(id);
-        return projectMemberEntity.map(ProjectMemberMapper::toDTO).orElse(null);
+        return projectMemberEntity.map(ProjectMemberMapper::toDTO)
+                .orElseThrow(() -> new EntityNotFoundException("Project Member not found"));
     }
 
     @Override
@@ -49,14 +52,11 @@ public class ProjectMemberService implements GenericCrudService<ProjectMember, P
     }
 
     @Override
-    public void update(Long id, ProjectMemberRequestDTO dto) {
-        Optional<ProjectMember> optional = repository.findById(id);
-        if(optional.isEmpty()) {
-            return;
-        }
+    public ProjectMemberResponseDTO update(Long id, ProjectMemberRequestDTO dto) {
         ProjectMember entity = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Project Member not found"));
-        repository.save(ProjectMemberMapper.updateEntity(entity, dto));
+        ProjectMember saved = repository.save(ProjectMemberMapper.updateEntity(entity, dto));
+        return ProjectMemberMapper.toDTO(saved);
     }
 
     @Override

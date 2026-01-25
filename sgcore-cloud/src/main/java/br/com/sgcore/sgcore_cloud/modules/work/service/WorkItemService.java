@@ -23,23 +23,26 @@ public class WorkItemService implements GenericCrudService<WorkItem, WorkItemReq
     }
 
     @Override
-    public WorkItem create(WorkItemRequestDTO dto) {
+    public WorkItemResponseDTO create(WorkItemRequestDTO dto) {
         WorkItem entity = WorkItemMapper.toEntity(dto);
-        return repository.save(entity);
+        WorkItem saved = repository.save(entity);
+        return WorkItemMapper.toDTO(saved);
     }
 
     @Override
-    public List<WorkItem> createAll(List<WorkItemRequestDTO> dtoList) {
+    public List<WorkItemResponseDTO> createAll(List<WorkItemRequestDTO> dtoList) {
         List<WorkItem> entities = dtoList.stream()
                 .map(WorkItemMapper::toEntity)
                 .toList();
-        return repository.saveAll(entities);
+        List<WorkItem> saved = repository.saveAll(entities);
+        return saved.stream().map(WorkItemMapper::toDTO).toList();
     }
 
     @Override
     public WorkItemResponseDTO findById(Long id) {
         Optional<WorkItem> workItemEntity = repository.findById(id);
-        return workItemEntity.map(WorkItemMapper::toDTO).orElse(null);
+        return workItemEntity.map(WorkItemMapper::toDTO)
+                .orElseThrow(() -> new EntityNotFoundException("Work Item not found"));
     }
 
     @Override
@@ -49,14 +52,11 @@ public class WorkItemService implements GenericCrudService<WorkItem, WorkItemReq
     }
 
     @Override
-    public void update(Long id, WorkItemRequestDTO dto) {
-        Optional<WorkItem> optional = repository.findById(id);
-        if (optional.isEmpty()) {
-            return;
-        }
+    public WorkItemResponseDTO update(Long id, WorkItemRequestDTO dto) {
         WorkItem entity = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Work Item not found"));
-        repository.save(WorkItemMapper.updateEntity(entity, dto));
+        WorkItem saved = repository.save(WorkItemMapper.updateEntity(entity, dto));
+        return WorkItemMapper.toDTO(saved);
     }
 
     @Override

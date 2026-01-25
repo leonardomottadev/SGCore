@@ -1,6 +1,7 @@
 package br.com.sgcore.sgcore_cloud.modules.work.controller;
 
 import br.com.sgcore.sgcore_cloud.modules.work.domain.WorkItem;
+import br.com.sgcore.sgcore_cloud.modules.work.dto.ProjectResponseDTO;
 import br.com.sgcore.sgcore_cloud.modules.work.dto.WorkItemRequestDTO;
 import br.com.sgcore.sgcore_cloud.modules.work.dto.WorkItemResponseDTO;
 import br.com.sgcore.sgcore_cloud.modules.work.service.WorkItemService;
@@ -23,8 +24,8 @@ public class WorkItemController {
 
     @PostMapping("/")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public  ResponseEntity<?> create(@Valid @RequestBody WorkItemRequestDTO dto) {
-        WorkItem workItem = service.create(dto);
+    public  ResponseEntity<WorkItemResponseDTO> create(@Valid @RequestBody WorkItemRequestDTO dto) {
+        WorkItemResponseDTO workItem = service.create(dto);
 
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -32,7 +33,7 @@ public class WorkItemController {
                 .buildAndExpand(workItem.getId())
                 .toUri();
 
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(workItem);
     }
 
     @GetMapping("/{id}")
@@ -49,12 +50,11 @@ public class WorkItemController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> update(
+    public ResponseEntity<WorkItemResponseDTO> update(
             @PathVariable Long id,
             @Valid @RequestBody WorkItemRequestDTO dto) {
-
-        service.update(id, dto);
-        return ResponseEntity.ok().build();
+        WorkItemResponseDTO updatedWorkItem = service.update(id, dto);
+        return ResponseEntity.ok().body(updatedWorkItem);
     }
 
     @DeleteMapping("/{id}")
